@@ -1,3 +1,4 @@
+from distutils.util import convert_path
 import imp
 import pygame
 from sys import exit
@@ -11,9 +12,16 @@ font = pygame.font.Font('font/RetGanon.ttf', 50)
 
 clock =  pygame.time.Clock()
 
-skySurface= pygame.image.load('graphics/sky.png')
-groundSurface = pygame.image.load('graphics/ground.png')
-fontSurface = font.render('Test game', False, 'ForestGreen')
+sky_surface= pygame.image.load('graphics/sky.png').convert_alpha()
+ground_surface = pygame.image.load('graphics/ground.png').convert_alpha()
+font_surface = font.render('Test game', False, 'ForestGreen', 'white')
+
+snail_surface = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
+snail_rect = snail_surface.get_rect(midbottom = (600,300))
+
+
+player_surface = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+Player_rect = player_surface.get_rect(midbottom = (80,300))
 
 # main game loop
 while True:
@@ -22,9 +30,15 @@ while True:
             pygame.quit()
             exit()
     
-    screen.blit(skySurface, (200,0))
-    screen.blit(groundSurface, (0,300))
-    screen.blit(fontSurface, (300, 50))
+    screen.blit(sky_surface,     (0,0))
+    screen.blit(ground_surface,  (0,300))
+    screen.blit(font_surface,    (300, 50))
+    screen.blit(player_surface, Player_rect)
+    if snail_rect.left <= -100:
+        snail_rect.left = 820
+    else:
+        snail_rect.left -= 3
+    screen.blit(snail_surface, snail_rect)
     
     pygame.display.update()
     clock.tick(60) #Capped game speed
