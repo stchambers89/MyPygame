@@ -30,4 +30,4 @@ class Level:
 
 
     def run(self):
-        pass
+        self.visable_sprites.draw(self.display_surface)
