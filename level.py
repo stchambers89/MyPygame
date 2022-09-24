@@ -2,6 +2,7 @@ import pygame
 from settings import *
 from tile import Tile
 from player import Player
+from debug import debug
 
 class Level:
     
@@ -12,7 +13,7 @@ class Level:
 
         #Sprite Group Setup 
         self.visable_sprites = pygame.sprite.Group()
-        self.obstacles_sprites = pygame.sprite.Group()
+        self.obstacle_sprites = pygame.sprite.Group()
 
         #Sprite set up
         self.create_map()
@@ -23,9 +24,9 @@ class Level:
                 x = col_index * TILESIZE
                 y = row_index * TILESIZE
                 if col == 'x':
-                    Tile((x,y), [self.visable_sprites, self.obstacles_sprites])
+                    Tile((x,y), [self.visable_sprites, self.obstacle_sprites])
                 if col == 'p':
-                    Player((x,y), [self.visable_sprites])
+                    self.player = Player((x,y), [self.visable_sprites])
             
             
 
@@ -33,3 +34,5 @@ class Level:
 
     def run(self):
         self.visable_sprites.draw(self.display_surface)
+        self.visable_sprites.update()
+        debug(self.player.direction)
