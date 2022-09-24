@@ -23,7 +23,7 @@ class Level:
                 x = col_index * TILESIZE
                 y = row_index * TILESIZE
                 if col == 'x':
-                    Tile((x,y),[self.visable_sprites] )
+                    Tile((x,y),[self.visable_sprites])
             
             
 
