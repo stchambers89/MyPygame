@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'down'
         self.frame_index = 0
         self.animation_speed = 0.15
+        self.attack_sound = pygame.mixer.Sound('audio/attack.mp3')
 
         #Movement 
         self.direction = pygame.math.Vector2()
@@ -91,6 +92,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE]:
                 self.attacking = True 
                 self.attack_time = pygame.time.get_ticks()
+                self.attack_sound.play()
                 print("attack")
 
             #magic input

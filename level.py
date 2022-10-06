@@ -39,20 +39,19 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], '')
+                            Tile((x,y), [self.obstacle_sprites], 'invisable')
                         # if style == 'grass':
                         #     random_grass_image = choice(graphics['grass'])
                         #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
                         # if style == 'object':
                         #     surf = graphics['objects'][int(col)]
                         #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'objects', surf)
-        self.player = Player((20,30), [self.visable_sprites], self.obstacle_sprites)
+        self.player = Player((50,70), [self.visable_sprites], self.obstacle_sprites)
             
         
     def run(self):
         self.visable_sprites.custom_draw(self.player)
         self.visable_sprites.update()
-        debug(self.player.status)
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
