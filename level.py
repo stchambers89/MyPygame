@@ -22,13 +22,14 @@ class Level:
     
     def create_map(self):
         layouts = {
-            'boundary' : import_csv_layout('map\map_FloorBlocks.csv'),
+            'boundary' : import_csv_layout('map\map_office.csv'),
             'grass' : import_csv_layout('map\map_Grass.csv'),
             'object' : import_csv_layout('map\map_Objects.csv'),
         }
 
         graphics = {
-            'grass': import_folder('graphics/grass')
+            'grass': import_folder('graphics/grass'),
+            'objects': import_folder('graphics/objects')
         }
         
         for style,layout in layouts.items():
@@ -38,18 +39,14 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], 'invisable')
-                        if style == 'grass':
-                            random_grass_image = choice(graphics['grass'])
-                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
-                        if style == 'object':
-                            #make object
-                            pass
-        #         if col == 'x':
-        #             Tile((x,y), [self.visable_sprites, self.obstacle_sprites])
-        #         if col == 'p':
-        #             self.player = Player((x,y), [self.visable_sprites], self.obstacle_sprites)
-        self.player = Player((2000,1430), [self.visable_sprites], self.obstacle_sprites)
+                            Tile((x,y), [self.obstacle_sprites], '')
+                        # if style == 'grass':
+                        #     random_grass_image = choice(graphics['grass'])
+                        #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+                        # if style == 'object':
+                        #     surf = graphics['objects'][int(col)]
+                        #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'objects', surf)
+        self.player = Player((20,30), [self.visable_sprites], self.obstacle_sprites)
             
         
     def run(self):
@@ -65,8 +62,8 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
-        #create floor
-        self.floor_surf = pygame.image.load('graphics/tilemap/ground.png').convert()
+        #CREATE MAIN FLOOR IMAGE
+        self.floor_surf = pygame.image.load('graphics/tilemap/ground_office.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
     
     def custom_draw(self, player):
