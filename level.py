@@ -5,6 +5,7 @@ from player import Player
 from debug import debug
 from support import *
 from random import choice
+from weapon import Weapon
 
 class Level:
     
@@ -22,7 +23,7 @@ class Level:
     
     def create_map(self):
         layouts = {
-            'boundary' : import_csv_layout('map\map_office.csv'),
+            'boundary' : import_csv_layout('map\map_FloorBlocks.csv'),
             'grass' : import_csv_layout('map\map_Grass.csv'),
             'object' : import_csv_layout('map\map_Objects.csv'),
         }
@@ -39,16 +40,18 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], 'invisable')
-                        # if style == 'grass':
-                        #     random_grass_image = choice(graphics['grass'])
-                        #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
-                        # if style == 'object':
-                        #     surf = graphics['objects'][int(col)]
-                        #     Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'objects', surf)
-        self.player = Player((50,70), [self.visable_sprites], self.obstacle_sprites)
-            
-        
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'invisable')
+                        if style == 'grass':
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+                        if style == 'object':
+                            surf = graphics['objects'][int(col)]
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'objects', surf)
+        self.player = Player((1200,1370), [self.visable_sprites], self.obstacle_sprites, self.create_attack)
+
+    def create_attack(self):
+        Weapon(self.player, [self.visable_sprites])
+
     def run(self):
         self.visable_sprites.custom_draw(self.player)
         self.visable_sprites.update()
@@ -63,7 +66,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
         #CREATE MAIN FLOOR IMAGE
-        self.floor_surf = pygame.image.load('graphics/tilemap/ground_office.png').convert()
+        self.floor_surf = pygame.image.load('graphics/tilemap/ground.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
     
     def custom_draw(self, player):
