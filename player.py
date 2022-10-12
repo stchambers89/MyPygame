@@ -33,7 +33,9 @@ class Player(pygame.sprite.Sprite):
         self.destroy_attack = destroy_attack
         self.weapon_index = 0 
         self.weapon = list(weapon_data.keys())[self.weapon_index]
-        
+        self.can_switch_weapon = True
+        self.weapon_switch_time = None
+        self.switch_weapon_cooldown = 200
 
         #Player Timer limits multiple actions every ms to every few seconds
     def get_status(self):
@@ -109,6 +111,17 @@ class Player(pygame.sprite.Sprite):
                 self.attack_time = pygame.time.get_ticks()
                 print('magic')
 
+            if keys[pygame.K_q] and self.can_switch_weapon:
+                self.can_switch_weapon = False
+                self.weapon_switch_time = pygame.time.get_ticks()
+
+                if self.weapon_index < int(len(list(weapon_data.keys())) -1):
+                    self.weapon_index += 1
+                else:
+                    self.weapon_index = 0
+                self.weapon = list(weapon_data.keys())[self.weapon_index]
+                print ('weapon switch')
+
     def move(self, speed):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
@@ -142,6 +155,9 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
                 self.destroy_attack()
+        if not self.can_switch_weapon:
+            if current_time - self.weapon_switch_time >= self.switch_weapon_cooldown:
+                self.can_switch_weapon = True
 
     def animate(self):
         animation = self.animations[self.status]
