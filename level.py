@@ -7,6 +7,7 @@ from support import *
 from random import choice
 from weapon import Weapon
 from ui import UI
+from enemy import Enemy
 
 class Level:
     
@@ -48,13 +49,13 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'invisable')
+                            Tile((x,y), [self.obstacle_sprites], 'invisable')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
                             Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'grass', random_grass_image)
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
-                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'objects', surf)
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'object', surf)
                         if style == 'entities':
                             if col == '394':
                                 self.player = Player(
@@ -64,6 +65,8 @@ class Level:
                                     self.create_attack,
                                     self.destroy_attack,
                                     self.create_magic)
+                            else:
+                                Enemy('monster', (x,y), [self.visable_sprites])
                             
 
     def create_attack(self):
