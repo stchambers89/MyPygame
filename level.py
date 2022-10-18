@@ -66,7 +66,11 @@ class Level:
                                     self.destroy_attack,
                                     self.create_magic)
                             else:
-                                Enemy('monster', (x,y), [self.visable_sprites])
+                                if col == '390' : monster_name = 'bamboo'
+                                elif col == '391' : monster_name = 'spirit'
+                                elif col == '392' : monster_name = 'raccoon'
+                                else: monster_name = 'squid'
+                                Enemy(monster_name, (x,y), [self.visable_sprites])
                             
 
     def create_attack(self):
