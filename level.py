@@ -70,9 +70,8 @@ class Level:
                                 elif col == '391' : monster_name = 'spirit'
                                 elif col == '392' : monster_name = 'raccoon'
                                 else: monster_name = 'squid'
-                                Enemy(monster_name, (x,y), [self.visable_sprites])
+                                Enemy(monster_name, (x,y), [self.visable_sprites], self.obstacle_sprites)
                             
-
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visable_sprites])
 
@@ -80,7 +79,6 @@ class Level:
         print(style)
         print(strength)
         print(cost)
-
 
     def destroy_attack(self):
         if self.current_attack:
@@ -90,6 +88,7 @@ class Level:
     def run(self):
         self.visable_sprites.custom_draw(self.player)
         self.visable_sprites.update()
+        self.visable_sprites.enemy_update(self.player)
         self.ui.display(self.player)
         
 
@@ -119,3 +118,8 @@ class YSortCameraGroup(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image,offset_pos)
+    
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+                enemy.enemy_update(player)
