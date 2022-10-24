@@ -3,7 +3,7 @@ import pygame
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, player, groups):
         super().__init__(groups)
-
+        self.sprite_type = 'weapon'
         # grab the direction the player is facing from the player.status variable,
         # then split anything after a '_', if no '_', then ignore
         direction = player.status.split('_')[0]
