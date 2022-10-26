@@ -48,6 +48,10 @@ class Player(Entity):
         self.speed = self.stats['speed']
         self.exp = 10
         
+        #damage timer
+        self.vunerable = True
+        self.hurt_time = None
+        self.invunerablity_duration = 500
 
         #Player Timer limits multiple actions every ms to every few seconds
     def get_status(self):
@@ -165,6 +169,10 @@ class Player(Entity):
         if not self.can_switch_magic:
             if current_time - self.magic_switch_time >= self.switch_magic_cooldown:
                 self.can_switch_magic = True
+        
+        if not self.vunerable:
+            if current_time - self.hurt_time >= self.invunerablity_duration:
+                self.vunerable = True
 
     def animate(self):
         animation = self.animations[self.status]
@@ -177,6 +185,9 @@ class Player(Entity):
         #select the image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
+
+        #flicker damage effect
+
 
     def get_full_weapon_damage(self):
         base_damage = self.stats.get('attack')
