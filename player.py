@@ -187,6 +187,11 @@ class Player(Entity):
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
         #flicker damage effect
+        if not self.vunerable:
+            alpha  = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
 
 
     def get_full_weapon_damage(self):
