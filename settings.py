@@ -2,8 +2,8 @@
 WIDTH = 1280
 HEIGHT = 720
 FPS = 60
-TILESIZE = 64
-MAP = 'graphics/tilemap/ground.png'
+TILESIZE = 32
+MAP = 'graphics/tilemap/map_etharis.png'
 
 #UI
 BAR_HEIGHT = 20

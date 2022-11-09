@@ -37,7 +37,7 @@ class Level:
     
     def create_map(self):
         layouts = {
-            'boundary' : import_csv_layout('map\map_FloorBlocks.csv'),
+            'boundary' : import_csv_layout('map\map_etharis_boundary.csv'),
             'grass' : import_csv_layout('map\map_Grass.csv'),
             'object' : import_csv_layout('map\map_Objects.csv'),
             'entities' : import_csv_layout('map\map_Entities.csv')
@@ -55,7 +55,7 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], 'invisable')
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'invisable')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
                             Tile((x,y),
@@ -83,7 +83,8 @@ class Level:
                                 Enemy(monster_name, (x,y), 
                                 [self.visable_sprites, self.attackable_sprites], 
                                 self.obstacle_sprites,
-                                self.damage_player)
+                                self.damage_player,
+                                self.trigger_death_particles)
                             
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visable_sprites, self.attack_sprites])
@@ -119,6 +120,9 @@ class Level:
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_player.create_particles(attack_type, self.player.rect.center, [self.visable_sprites])
         
+    def trigger_death_particles(self, pos, particle_type):
+        self.animation_player.create_particles(particle_type, pos, self.visable_sprites)
+
     def run(self):
         self.visable_sprites.custom_draw(self.player)
         self.visable_sprites.update()
