@@ -40,7 +40,7 @@ class Level:
             'boundary' : import_csv_layout('map\map_etharis_boundary.csv'),
             'grass' : import_csv_layout('map\map_Grass.csv'),
             'object' : import_csv_layout('map\map_Objects.csv'),
-            'entities' : import_csv_layout('map\map_Entities.csv')
+            'entities' : import_csv_layout('map\map_etharis_entities.csv')
         }
 
         graphics = {
@@ -55,7 +55,7 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], 'invisable')
+                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'invisable')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
                             Tile((x,y),
