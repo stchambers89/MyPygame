@@ -33,10 +33,10 @@ class Menu:
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
         
-        if keys[pygame.K_SPACE]:
-            self.can_move = False
-            self.selection_time = pygame.time.get_ticks()
-            print(self.selection_index)
+            if keys[pygame.K_SPACE]:
+                self.can_move = False
+                self.selection_time = pygame.time.get_ticks()
+                self.item_list[self.selection_index].trigger(self.player)
 
     def selection_cooldown(self):
         if not self.can_move:
@@ -81,19 +81,45 @@ class Item:
         self.font = font
 
     def display_names(self, surface, name, cost, selected):
+        #color
+        color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
+
         #name
-        title_surf = self.font.render(name, False, TEXT_COLOR)
+        title_surf = self.font.render(name, False, color)
         title_rect = title_surf.get_rect(midtop = self.rect.midtop + pygame.math.Vector2(0, 20))
 
         #cost
-        cost_surf = self.font.render(str(int(cost)), False, TEXT_COLOR)
+        cost_surf = self.font.render(str(int(cost)), False, color)
         cost_rect = cost_surf.get_rect(midbottom = self.rect.midbottom + pygame.math.Vector2(0, -20))
 
         surface.blit(title_surf, title_rect)
         surface.blit(cost_surf, cost_rect)
+
+    def display_bar(self, surface, value, max_value, selected):
+        #setup
+        top = self.rect.midtop + pygame.math.Vector2(0,60)
+        bottom = self.rect.midbottom - pygame.math.Vector2(0,60)
+        color = BAR_COLOR_SELECTED if selected else BAR_COLOR
+
+        #indicator rectangle
+        full_height = bottom[1] - top[1]
+        relative_num = (value / max_value) * full_height
+        value_rect = pygame.Rect(top[0] - 15, bottom[1] - relative_num, 30, 10)
+
+        #Draw stuff
+        pygame.draw.line(surface, color, top, bottom, 4)
+        pygame.draw.rect(surface, color, value_rect)
+
+    def trigger(self, player):
+        menu_attribute = list(player.stats.keys())[self.index]
+        print(menu_attribute)
     
     def display(self, surface, selection_num, name, value, max_value, cost):
         if self.index == selection_num:
-            pass
-        pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
-        self.display_names(surface, name, cost, False)
+            pygame.draw.rect(surface, MENU_BG_COLOR_SELECTED, self.rect)
+            pygame.draw.rect(surface, '#000000', self.rect, 4)
+        else:
+            pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
+            pygame.draw.rect(surface, UI_BORDER_COLOR, self.rect, 4)
+        self.display_names(surface, name, cost, self.index == selection_num)
+        self.display_bar(surface, value, max_value, self.index == selection_num)

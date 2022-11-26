@@ -58,7 +58,7 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.visable_sprites, self.obstacle_sprites], 'invisable')
+                            Tile((x,y), [self.obstacle_sprites], 'invisable')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
                             Tile((x,y),
