@@ -48,7 +48,7 @@ class Player(Entity):
         self.health = self.stats['health']
         self.energy = self.stats['energy']
         self.speed = self.stats['speed']
-        self.exp = 500
+        self.exp = 5000
         
         #damage timer
         self.vunerable = True
